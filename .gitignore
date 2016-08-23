@@ -1,2 +1,2 @@
 *.proxy
-*.yml
+/docker-compose-proxy.yml

@@ -1,0 +1,47 @@
+version: "2"
+
+services:
+
+    zookeeper:
+        extends:
+            file:   zookeeper.yml
+            service: zookeeper
+    
+    hadoop:
+        image: mcapitanio/hadoop
+        links:
+            - zookeeper
+        networks:
+            - hadoop
+        volumes:
+            - hadoop_conf:/opt/hadoop/etc/hadoop
+            - hadoop_logs:/opt/hadoop/logs
+            - hadoop_hdfs:/hdfs
+        ports:
+            - "50070:50070"
+            - "8042:804"
+            - "8088:8088"
+            - "8188:8188"
+            - "19888:19888"
+
+    hbase:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: mcapitanio/hbase:latest
+        volumes:
+            - hbase_logs:/opt/hbase/logs
+            - hbase_conf:/opt/hbase/conf
+        links:
+          - hadoop
+
+volumes:
+    hadoop_conf:
+    hadoop_hdfs:
+    hadoop_logs:
+    hbase_conf:
+    hbase_logs:
+
+networks:
+    hadoop:
+        driver: bridge
