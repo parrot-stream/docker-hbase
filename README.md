@@ -37,4 +37,4 @@ Setting the project name to *docker*, the volumes will be named *docker_hbase_co
 
 ### Available tags:
 
-- Apache HBase 1.2.2 (1.2.2, [latest](https://github.com/mcapitanio/docker-hbase/blob/latest/Dockerfile))
+- Apache HBase 1.2.2 ([1.2.2](https://github.com/mcapitanio/docker-hbase/blob/1.2.2/Dockerfile), [latest](https://github.com/mcapitanio/docker-hbase/blob/latest/Dockerfile))
