@@ -1,10 +1,10 @@
-FROM mcapitanio/centos-java:7-7u80
+FROM mcapitanio/hadoop
+
+ENV HBASE_VER 1.2.2
 
 MAINTAINER Matteo Capitanio <matteo.capitanio@gmail.com>
 
 USER root
-
-ENV HBASE_VER 1.2.2
 
 ENV http_proxy ${http_proxy}
 ENV https_proxy ${https_proxy}
@@ -16,9 +16,7 @@ ENV HBASE_CONF_DIR $HBASE_HOME/conf
 ENV PATH $HBASE_HOME/bin:$PATH
 
 # Install needed packages
-RUN yum clean all; yum update -y; yum clean all
-RUN yum install -y ant which openssh-clients openssh-server openssl python-setuptools
-RUN easy_install supervisor
+RUN yum update -y; yum clean all
 
 WORKDIR /opt/docker
 
@@ -37,13 +35,9 @@ RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
 
 RUN useradd -p $(echo "hbase" | openssl passwd -1 -stdin) hbase; \
-    useradd -p $(echo "hdfs" | openssl passwd -1 -stdin) hdfs; \
-    groupadd supergroup; \
-    usermod -a -G supergroup hdfs; \
-    usermod -a -G supergroup hbase; \
-    usermod -a -G hdfs hbase;
+    usermod -a -G supergroup hbase
 
-EXPOSE 60010 60030
+EXPOSE 8080 8085 9090 9095 60000 60010 60020 60030
 
 VOLUME [ "/opt/hbase/logs", "/opt/hbase/conf" ]
 

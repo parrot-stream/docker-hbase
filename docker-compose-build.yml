@@ -30,6 +30,7 @@ services:
             - hadoop
             - zookeeper
         ports:
+            - "9090:9090"
             - "60010:60010"
             - "60030:60030"
 

@@ -30,8 +30,6 @@ if [ $rc -ne 0 ]; then
     echo -e "      HDFS not ready! Exiting..."
     echo -e "---------------------------------------"
     exit $rc
-    echo "HDFS not ready! Exiting..."
-	exit $rc
 fi
 
 supervisorctl start sshd
@@ -43,29 +41,71 @@ if [ $rc -ne 0 ]; then
     echo -e "      SSH not ready! Exiting..."
     echo -e "---------------------------------------"
     exit $rc
-    echo "HDFS not ready! Exiting..."
-	exit $rc
 fi
 
-supervisorctl start hbase
+#hdfs dfsadmin -safemode leave
+#hdfs dfs -rm /hbase/.tmp/hbase-hbck.lock
+#hdfs fsck / -delete
+#hdfs dfsadmin -safemode leave
+#hdfs fsck / -delete
+#hdfs dfsadmin -safemode leave
 
-ip=`awk 'END{print $1}' /etc/hosts`
+#hbase org.apache.hadoop.hbase.util.hbck.OfflineMetaRepair
+
+supervisorctl start master
+supervisorctl start regionserver
+
+#hbase hbck -fixVersionFile -fixMeta -fixAssignments
+#hbase hbck -repair
 
 wait-for-it.sh localhost:60010 -t 120
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
-    echo -e "     HBase not ready! Exiting..."
+    echo -e " HBase Master not ready! Exiting..."
     echo -e "---------------------------------------"
     exit $rc
-    echo "HDFS not ready! Exiting..."
-	exit $rc
 fi
+
+wait-for-it.sh localhost:60030 -t 120
+rc=$?
+if [ $rc -ne 0 ]; then
+    echo -e "\n-----------------------------------------"
+    echo -e "HBase Region Server not ready! Exiting..."
+    echo -e "-----------------------------------------"
+    exit $rc
+fi
+
+supervisorctl start rest
+
+wait-for-it.sh localhost:8080 -t 120
+rc=$?
+if [ $rc -ne 0 ]; then
+    echo -e "\n---------------------------------------"
+    echo -e "   HBase Rest not ready! Exiting..."
+    echo -e "---------------------------------------"
+    exit $rc
+fi
+
+supervisorctl start thrift
+
+wait-for-it.sh localhost:9090 -t 120
+rc=$?
+if [ $rc -ne 0 ]; then
+    echo -e "\n---------------------------------------"
+    echo -e "  HBase Thrift not ready! Exiting..."
+    echo -e "---------------------------------------"
+    exit $rc
+fi
+
+
+ip=`awk 'END{print $1}' /etc/hosts`
 
 echo -e "\n\n--------------------------------------------------------------------------------"
 echo -e "You can now access to the following HBase Web UIs:"
 echo -e ""
-echo -e "HBase Master 		http://$ip:60010\n"
+echo -e "HBase Master           http://$ip:60010"
+echo -e "HBase Region Server    http://$ip:60030\n"
 echo -e "Mantainer: Matteo Capitanio <matteo.capitanio.gmail.com>
 echo -e "--------------------------------------------------------------------------------\n\n"
 
