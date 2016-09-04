@@ -43,20 +43,8 @@ if [ $rc -ne 0 ]; then
     exit $rc
 fi
 
-#hdfs dfsadmin -safemode leave
-#hdfs dfs -rm /hbase/.tmp/hbase-hbck.lock
-#hdfs fsck / -delete
-#hdfs dfsadmin -safemode leave
-#hdfs fsck / -delete
-#hdfs dfsadmin -safemode leave
-
-#hbase org.apache.hadoop.hbase.util.hbck.OfflineMetaRepair
-
 supervisorctl start master
 supervisorctl start regionserver
-
-#hbase hbck -fixVersionFile -fixMeta -fixAssignments
-#hbase hbck -repair
 
 wait-for-it.sh localhost:60010 -t 120
 rc=$?
