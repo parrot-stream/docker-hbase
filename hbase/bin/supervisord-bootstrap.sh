@@ -23,7 +23,6 @@ if [ $rc -ne 0 ]; then
 fi
 
 wait-for-it.sh hadoop:8020 -t 120
-
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -31,6 +30,8 @@ if [ $rc -ne 0 ]; then
     echo -e "---------------------------------------"
     exit $rc
 fi
+
+hdfs dfsadmin -safemode leave
 
 supervisorctl start sshd
 
@@ -46,7 +47,7 @@ fi
 supervisorctl start master
 supervisorctl start regionserver
 
-wait-for-it.sh localhost:60010 -t 120
+wait-for-it.sh localhost:60010 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -55,7 +56,7 @@ if [ $rc -ne 0 ]; then
     exit $rc
 fi
 
-wait-for-it.sh localhost:60030 -t 120
+wait-for-it.sh localhost:60030 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n-----------------------------------------"
@@ -66,7 +67,7 @@ fi
 
 supervisorctl start rest
 
-wait-for-it.sh localhost:8080 -t 120
+wait-for-it.sh localhost:8080 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -77,7 +78,7 @@ fi
 
 supervisorctl start thrift
 
-wait-for-it.sh localhost:9090 -t 120
+wait-for-it.sh localhost:9090 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -94,7 +95,7 @@ echo -e "You can now access to the following HBase Web UIs:"
 echo -e ""
 echo -e "HBase Master           http://$ip:60010"
 echo -e "HBase Region Server    http://$ip:60030\n"
-echo -e "Mantainer: Matteo Capitanio <matteo.capitanio.gmail.com>
+echo -e "Mantainer: Matteo Capitanio <matteo.capitanio.gmail.com>"
 echo -e "--------------------------------------------------------------------------------\n\n"
 
 
