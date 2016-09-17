@@ -1,6 +1,6 @@
 FROM mcapitanio/hadoop
 
-ENV HBASE_VER 1.2.2
+ENV HBASE_VER 1.2.3
 
 MAINTAINER Matteo Capitanio <matteo.capitanio@gmail.com>
 
