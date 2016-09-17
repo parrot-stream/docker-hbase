@@ -21,7 +21,7 @@ RUN yum update -y; yum clean all
 WORKDIR /opt/docker
 
 # Apache HBase
-RUN wget http://mirrors.muzzy.it/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz
+RUN wget http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz
 RUN tar -xvf hbase-$HBASE_VER-bin.tar.gz -C ..; \
     mv ../hbase-$HBASE_VER ../hbase
 
