@@ -6,10 +6,6 @@ MAINTAINER Matteo Capitanio <matteo.capitanio@gmail.com>
 
 USER root
 
-ENV http_proxy ${http_proxy}
-ENV https_proxy ${https_proxy}
-ENV no_proxy ${no_proxy}
-
 ENV HBASE_HOME /opt/hbase
 ENV HBASE_CONF_DIR $HBASE_HOME/conf
 

@@ -15,6 +15,9 @@ services:
             - zookeeper
 
     hbase:
+        build:
+            context: .
+            dockerfile: Dockerfile
         image: mcapitanio/hbase:latest
         networks:
             - hadoop
