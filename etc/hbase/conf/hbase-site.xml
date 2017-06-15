@@ -27,4 +27,12 @@
     <name>hbase.regionserver.info.bindAddress</name>
     <value>0.0.0.0</value>
   </property>
+  <property>
+    <name>hbase.client.retries.number</name>
+    <value>3</value>
+  </property>
+  <property>
+    <name>hbase.rpc.timeout</name>
+    <value>3000</value>
+  </property>
 </configuration>

@@ -1,40 +1,39 @@
-FROM mcapitanio/hadoop
+FROM ubuntu:16.04
 
-ENV HBASE_VER 1.2.3
+ENV HBASE_VER 1.2.0+cdh5.11.1
 
 MAINTAINER Matteo Capitanio <matteo.capitanio@gmail.com>
 
+ENV IMPALA_VER 2.8.0+cdh5.11.1
+ENV HADOOP_VER 2.6.0+cdh5.11.1
+
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64/
+
 USER root
-
-ENV HBASE_HOME /opt/hbase
-ENV HBASE_CONF_DIR $HBASE_HOME/conf
-
-ENV PATH $HBASE_HOME/bin:$PATH
-
-# Install needed packages
-RUN yum update -y; yum clean all
 
 WORKDIR /opt/docker
 
-# Apache HBase
-RUN wget http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz
-RUN tar -xvf hbase-$HBASE_VER-bin.tar.gz -C ..; \
-    mv ../hbase-$HBASE_VER ../hbase
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install -y wget apt-transport-https python-setuptools openjdk-8-jdk apt-utils sudo
+RUN easy_install supervisor
+RUN wget http://archive.cloudera.com/cdh5/one-click-install/trusty/amd64/cdh5-repository_1.0_all.deb
+RUN dpkg -i cdh5-repository_1.0_all.deb
+RUN apt-get update -y
+RUN apt-get install -y --allow-unauthenticated hbase-master=$HBASE_VER* hbase-regionserver=$HBASE_VER* hbase-rest=$HBASE_VER* hbase-thrift=$HBASE_VER*
 
-COPY hbase/ $HBASE_HOME/
-COPY ./etc /etc
-RUN chmod +x $HBASE_HOME/conf/hbase-env.sh
-RUN chmod +x $HBASE_HOME/bin/*.sh
-
-ADD ssh_config /root/.ssh/config
-RUN chmod 600 /root/.ssh/config
-RUN chown root:root /root/.ssh/config
-
-RUN useradd -p $(echo "hbase" | openssl passwd -1 -stdin) hbase; \
+RUN groupadd supergroup; \    
     usermod -a -G supergroup hbase
 
-EXPOSE 8080 8085 9090 9095 60000 60010 60020 60030
+ADD etc/supervisord.conf /etc/
+ADD etc/hbase/conf/hbase-site.xml /etc/hbase/conf/
 
-VOLUME [ "/opt/hbase/logs", "/opt/hbase/conf" ]
+# Various helper scripts
+ADD bin/start-hbase.sh ./
+ADD bin/supervisord-bootstrap.sh ./
+ADD bin/wait-for-it.sh ./
+RUN chmod +x ./*.sh
+
+EXPOSE 8080 8085 9090 9095 60000 60010 60020 60030
 
 ENTRYPOINT ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
