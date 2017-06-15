@@ -4,9 +4,6 @@ ENV HBASE_VER 1.2.0+cdh5.11.1
 
 MAINTAINER Matteo Capitanio <matteo.capitanio@gmail.com>
 
-ENV IMPALA_VER 2.8.0+cdh5.11.1
-ENV HADOOP_VER 2.6.0+cdh5.11.1
-
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64/
 
 USER root

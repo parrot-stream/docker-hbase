@@ -20,7 +20,7 @@ You can also find other images based on different Apache HBase releases, using a
 
 For example, if you want Apache HBase release 0.98.21 you can pull the image with:
 
-    docker pull mcapitanio/hbase:0.98.21
+    docker pull mcapitanio/hbase:1.2.0-cdh5.11.1
 
 Run with Docker Compose:
 
@@ -35,14 +35,10 @@ Once started you'll be able to read the list of all the HBase Web GUIs urls:
 | *HBase Master*         | http://localhost:60010    |
 | *HBase Region Server*  | http://localhost:60030    |
 
-There are 2 named volumes defined:
-
-- **hbase_conf** wich points to HBASE_CONF_DIR
-- **hbase_logs** which points to HBASE LOG_DIR
-
 Setting the project name to *docker*, the volumes will be named *docker_hbase_conf* and *docker_hbase_logs*.
 
 ### Available tags:
 
 - Apache HBase 1.2.3 ([1.2.3](https://github.com/mcapitanio/docker-hbase/blob/1.2.3/Dockerfile), [latest](https://github.com/mcapitanio/docker-hbase/blob/latest/Dockerfile))
 - Apache HBase 1.2.2 ([1.2.2](https://github.com/mcapitanio/docker-hbase/blob/1.2.2/Dockerfile))
+- Apache HBase 1.2.0-cdh5.11.1 ([1.2.0-cdh5.11.1](https://github.com/mcapitanio/docker-hbase/blob/1.2.0-cdh5.11.1/Dockerfile))

@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mcapitanio/hbase:latest
+    image: mcapitanio/hbase:1.2.0-cdh5.11.1
     networks:
     - hadoop
     volumes:
