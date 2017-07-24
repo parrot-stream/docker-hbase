@@ -4,9 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mcapitanio/hbase:1.2.0-cdh5.11.1
+    image: parrotstream/hbase:1.2.0-cdh5.11.1
     networks:
-    - hadoop
+    - parrot
     volumes:
     - hbase_conf:/opt/hbase/conf
     external_links:
@@ -27,6 +27,6 @@ volumes:
 networks:
   default:
     external:
-      name: hadoop
-  hadoop:
+      name: parrot
+  parrot:
     driver: bridge

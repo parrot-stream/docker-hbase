@@ -3,7 +3,7 @@
 supervisorctl start hbase-master
 supervisorctl start hbase-regionserver
 
-/opt/docker/wait-for-it.sh localhost:60010 -t 240
+/wait-for-it.sh localhost:60010 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -12,7 +12,7 @@ if [ $rc -ne 0 ]; then
     exit $rc
 fi
 
-/opt/docker/wait-for-it.sh localhost:60030 -t 240
+/wait-for-it.sh localhost:60030 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n-----------------------------------------"
@@ -22,7 +22,7 @@ if [ $rc -ne 0 ]; then
 fi
 
 supervisorctl start hbase-rest
-/opt/docker/wait-for-it.sh localhost:8080 -t 240
+/wait-for-it.sh localhost:8080 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -32,7 +32,7 @@ if [ $rc -ne 0 ]; then
 fi
 
 supervisorctl start hbase-thrift
-/opt/docker/wait-for-it.sh localhost:9090 -t 240
+/wait-for-it.sh localhost:9090 -t 240
 rc=$?
 if [ $rc -ne 0 ]; then
     echo -e "\n---------------------------------------"
@@ -40,7 +40,6 @@ if [ $rc -ne 0 ]; then
     echo -e "---------------------------------------"
     exit $rc
 fi
-
 
 echo -e "\n\n--------------------------------------------------------------------------------"
 echo -e "You can now access to the following HBase Web UIs:"
