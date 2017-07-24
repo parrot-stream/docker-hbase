@@ -46,6 +46,6 @@ echo -e "You can now access to the following HBase Web UIs:"
 echo -e ""
 echo -e "HBase Master           http://localhost:60010"
 echo -e "HBase Region Server    http://localhost:60030\n"
-echo -e "Mantainer: Matteo Capitanio <matteo.capitanio.gmail.com>"
+echo -e "Mantainer: Matteo Capitanio <matteo.capitanio@gmail.com>"
 echo -e "--------------------------------------------------------------------------------\n\n"
 
