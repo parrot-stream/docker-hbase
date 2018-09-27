@@ -1,11 +1,11 @@
-FROM parrotstream/centos-openjdk
+FROM parrotstream/centos-openjdk:8
 
 MAINTAINER Matteo Capitanio <matteo.capitanio@gmail.com>
 
 USER root
 
-ADD cloudera-cdh5.repo /etc/yum.repos.d/
-RUN rpm --import https://archive.cloudera.com/cdh5/redhat/5/x86_64/cdh/RPM-GPG-KEY-cloudera
+ADD cloudera-cdh6.repo /etc/yum.repos.d/
+RUN rpm --import https://archive.cloudera.com/cdh6/6.0.0/redhat7/yum/RPM-GPG-KEY-cloudera
 RUN yum install -y hbase-master hbase-regionserver hbase-rest hbase-thrift
 RUN yum clean all
 

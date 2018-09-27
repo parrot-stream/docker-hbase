@@ -1,5 +1,27 @@
 version: '3'
 services:
+  zookeeper:
+    image: parrotstream/zookeeper:latest
+    ports:
+    - 2181:2181
+    - 2888:2888
+    - 3888:3888
+    networks:
+    - parrot
+  hadoop:
+    image: parrotstream/hadoop:3.0.3
+    links:
+    - zookeeper
+    networks:
+    - parrot
+    ports:
+    - 9870:9870
+    - 9864:9864
+    - 9820:9820
+    - 8042:8042
+    - 8088:8088
+    - 8188:8188
+    - 19888:19888
   hbase:
     build:
       context: .
@@ -7,9 +29,7 @@ services:
     image: parrotstream/hbase:latest
     networks:
     - parrot
-    volumes:
-    - hbase_conf:/opt/hbase/conf
-    external_links:
+    links:
     - hadoop
     - zookeeper
     ports:
@@ -21,9 +41,6 @@ services:
     - 60010:60010
     - 60020:60020
     - 60030:60030
-volumes:
-  hadoop_conf: null
-  hbase_conf: null
 networks:
   default:
     external:
