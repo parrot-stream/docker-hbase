@@ -26,7 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: parrotstream/hbase:latest
+    image: parrotstream/hbase:2.0.0
     networks:
     - parrot
     links:
