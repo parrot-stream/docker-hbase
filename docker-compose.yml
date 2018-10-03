@@ -1,14 +1,11 @@
 version: '3'
 services:
   hbase:
+    container_name: hbase
     build:
       context: .
       dockerfile: Dockerfile
     image: parrotstream/hbase:1.2.0-cdh5.11.1
-    networks:
-    - parrot
-    volumes:
-    - hbase_conf:/opt/hbase/conf
     external_links:
     - hadoop
     - zookeeper
@@ -21,12 +18,7 @@ services:
     - 60010:60010
     - 60020:60020
     - 60030:60030
-volumes:
-  hadoop_conf: null
-  hbase_conf: null
 networks:
   default:
     external:
-      name: parrot
-  parrot:
-    driver: bridge
+      name: parrot_default
